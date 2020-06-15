@@ -56,25 +56,113 @@ design.addEventListener('change', (e) => {
     handleDesignTheme(theme, selectHTML);
   })
 
+const handleActivities = () => {
+  const activities = document.querySelector('.activities');
+  const checkboxes = activities.querySelectorAll('input')
+  let isChecked = [];
+  for (var i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i].checked) { isChecked.push(checkboxes[i]) }
+  }
+  return isChecked
+}
+
+const createEl = (el, id, text) => {
+  const elem = document.createElement(el);
+  elem.id = id;
+  elem.textContent = text;
+  return elem
+}
+
+const removePreviousPrice = () => {
+  if (document.querySelector('#price')) {
+    const parent = document.querySelector('#price').parentNode;
+    const child = document.querySelector('#price');
+    parent.removeChild(child);
+  }
+}
+
+const setNewPrice = () => {
+  const isChecked = handleActivities();
+  const activityCosts = [];
+  for (let i = 0; i < isChecked.length; i++) {
+    activityCosts.push(parseInt(isChecked[i].dataset.cost));
+  }
+  const totalCost = activityCosts.reduce(function(a, b){
+      return a + b;
+  }, 0); //https://www.tutorialrepublic.com/faq/how-to-find-the-sum-of-an-array-of-numbers-in-javascript.php
+  if (totalCost === 0) {
+    const text = `Total Price:`
+    const priceHTML =  createEl('label', "price", text);
+    activities.appendChild(priceHTML)
+  } else {
+    const text = `Total Price: $${totalCost}`
+    const priceHTML =  createEl('label', "price", text);
+    activities.appendChild(priceHTML)
+  }
+}
+
+const handleTotalPrice = () => {
+  removePreviousPrice();
+  setNewPrice();
+}
+
+
 /*
 Some events are at the same day and time as others.
 */
 const activities = document.querySelector('.activities');
 const checkboxes = activities.querySelectorAll('input')
-console.log(checkboxes);
+
+const handleScheduling = (e) => {
+  const dayAndTime = e.target.dataset.dayAndTime;
+  const nameOfChecked = e.target.name;
+  const targetChecked = e.target.checked;
+
+  const frameworks = checkboxes[1];
+  const dayAndTimeFrameworks = frameworks.dataset.dayAndTime;
+
+  const libraries = checkboxes[2];
+  const dayAndTimeLibs = libraries.dataset.dayAndTime;
+
+  const express = checkboxes[3];
+  const dayAndTimeExpress = express.dataset.dayAndTime;
+
+  const node = checkboxes[4];
+  const dayAndTimeNode = node.dataset.dayAndTime;
+
+  if ( nameOfChecked === 'js-frameworks' && dayAndTime === dayAndTimeExpress ) {
+    express.disabled = true;
+  }
+  if (nameOfChecked === 'js-frameworks' && !targetChecked) {
+    express.disabled = false;
+  }
+  if ( nameOfChecked === 'js-libs' && dayAndTime === dayAndTimeNode ) {
+    node.disabled = true;
+  }
+  if ( nameOfChecked === 'js-libs' && !targetChecked ) {
+    node.disabled = false;
+  }
+  if ( nameOfChecked === 'express' && dayAndTime === dayAndTimeFrameworks ) {
+    frameworks.disabled = true;
+  }
+  if ( nameOfChecked === 'express' && !targetChecked ) {
+    frameworks.disabled = false;
+  }
+  if ( nameOfChecked === 'node' && dayAndTime === dayAndTimeLibs ) {
+    libraries.disabled = true;
+  }
+  if ( nameOfChecked === 'node' && !targetChecked ) {
+    libraries.disabled = false;
+  }
+}
+
+// append `Total Price:` to page upon initial load
+const text = `Total Price:`
+const priceHTML =  createEl('label', "price", text);
+activities.appendChild(priceHTML)
+
+// track what activities have been checked off and total price
 activities.addEventListener('change', (e) => {
-  console.log(e.target.checked);
+  handleScheduling(e);
+  handleTotalPrice();
 })
-/*
-If the user selects a workshop, don't allow selection of a workshop at the same day and time
-    -- you should disable the checkbox and
-       visually indicate that the workshop in the competing time slot isn't available.
-*/
-
-/*
-When a user unchecks an activity, make sure that competing activities (if there are any) are no longer disabled.
-*/
-
-/*
-As a user selects activities, a running total should display below the list of checkboxes. For example, if the user selects "Main Conference", then Total: $200 should appear. If they add 1 workshop, the total should change to Total: $300.
-*/
