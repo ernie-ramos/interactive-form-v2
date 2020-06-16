@@ -166,3 +166,35 @@ activities.addEventListener('change', (e) => {
   handleScheduling(e);
   handleTotalPrice();
 })
+
+// Make Credit Card the default option by removing "select method" option,
+// and hidding paypal and bitcoin messages
+const payments = document.querySelector('#payment');
+const paymentOptions = payments.querySelectorAll('option');
+payments.removeChild(paymentOptions[0])
+document.querySelector('#paypal').style.display = 'none'
+document.querySelector('#bitcoin').style.display = 'none'
+
+// Display payment sections based on the payment option chosen in the select menu.
+payments.addEventListener('change', (e) => {
+  console.log(e.target.value);
+  // The "Credit Card" payment option should be selected by default. Display the #credit-card div, and hide the "PayPal" and "Bitcoin" information. Payment option in the select menu should match the payment option displayed on the page.
+  if (e.target.value === 'credit card') {
+    document.querySelector('#credit-card').style.display = 'block'
+    document.querySelector('#paypal').style.display = 'none'
+    document.querySelector('#bitcoin').style.display = 'none'
+  }
+  // When a user selects the "PayPal" payment option, the PayPal information should display, and the credit card and “Bitcoin” information should be hidden.
+  if (e.target.value === 'paypal') {
+    document.querySelector('#paypal').style.display = 'block'
+    document.querySelector('#credit-card').style.display = 'none'
+    document.querySelector('#bitcoin').style.display = 'none'
+  }
+  // When a user selects the "Bitcoin" payment option, the Bitcoin information should display, and the credit card and “PayPal” information should be hidden.
+  if (e.target.value === 'bitcoin') {
+    document.querySelector('#bitcoin').style.display = 'block'
+    document.querySelector('#paypal').style.display = 'none'
+    document.querySelector('#credit-card').style.display = 'none'
+
+  }
+})
