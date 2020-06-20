@@ -198,3 +198,84 @@ payments.addEventListener('change', (e) => {
 
   }
 })
+
+const nameValidation = document.querySelector('[id=name]')
+nameValidation.placeholder = `Full Name`
+nameValidation.addEventListener('change', (e) => {
+  if (nameValidation.value === '') {
+    document.querySelector('[for=name]').textContent = "Name: 🤪"
+  } else {
+    document.querySelector('[for=name]').textContent = "Name: 😁"
+  }
+})
+
+
+/*
+American Express :- Starting with 34 or 37, length 15 digits.
+  3434 123456 12345
+Visa :- Starting with 4, length 13 or 16 digits.
+  4000 1234 1234 1234 or 4234 12345 1234
+MasterCard :- Starting with 51 through 55, length 16 digits.
+  5123 1234 1234 1234
+Discover :- Starting with 6011, length 16 digits or starting with 5, length 15 digits.
+  6011 1234 1234 1234 or 5234 1234 1234 123
+Diners Club :- Starting with 300 through 305, 36, or 38, length 14 digits.
+  3634 123456 1234
+JCB :- Starting with 2131 or 1800, length 15 digits or starting with 35, length 16 digits.
+  3534 1234 1234 1234 or
+
+https://www.w3resource.com/javascript/form/credit-card-validation.php
+*/
+
+// Credit card validation
+const multOddsBy2 = (reversed) => {
+  for (let i = 0; i < reversed.length; i+= 2) {
+    reversed[i] = reversed[i] * 2;
+  }
+  return reversed;
+}
+const sub9IfOver9 = (oddsMultipliedBy2) => {
+  for (let i = 0; i < oddsMultipliedBy2.length; i++) {
+    if (oddsMultipliedBy2[i] > 9) {
+      oddsMultipliedBy2[i] = oddsMultipliedBy2[i] - 9;
+    }
+  }
+  return oddsMultipliedBy2;
+}
+const validateCreditCard = (mod10, lastNum) => {
+  if (mod10 === lastNum) {
+    return "Credit Card Number is Valid!";
+  }
+}
+
+
+// Luhn algorith for credit card validation
+const origNum = [4, 5, 5,	6, 7,	3, 7, 5, 8, 6, 8, 9, 9, 8, 5, 5];
+
+const creditValidator = (arr) => {
+  return validateCreditCard(sub9IfOver9(multOddsBy2(arr.reverse())).reduce(function(a, b){return a + b; }, 0) % 10, arr.pop());
+}
+//console.log(creditValidator(origNum));
+
+const labelCcNum = document.querySelector('[for=cc-num]');
+
+const ccNum = document.querySelector('[id=cc-num]');
+ccNum.addEventListener('keyup', (e) => {
+  const num = ccNum.value;
+  const numArr = [];
+  for (var i = 0; i < num.length; i++) {
+    numArr.push(parseInt(num[i]));
+  }
+  const firstTwo = parseInt(numArr.splice(0,2).join('')) // use Regex
+  if (firstTwo === 34 || firstTwo === 37) { // use Regex
+    labelCcNum.textContent = 'Card Number: American Express';
+  } else {
+    labelCcNum.textContent = 'Card Number:';
+  }
+
+})
+
+/*
+  `\d{13,16}` digits between 13 and 16 numbers in length
+  `\d{4} \d{4} \d{4} \d{4}` matches `1234 1234 1234 1234`
+*/
