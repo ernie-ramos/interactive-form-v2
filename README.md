@@ -1,5 +1,5 @@
 # interactive-form-v2
- Unit 3 Project--Interactive Form
+# Unit 3 Project--Interactive Form
 
 In this project, I have used JavaScript to enhance an interactive registration form for a fictional conference called "FullStack Conf."
 
