@@ -1,9 +1,11 @@
 # interactive-form-v2
  Unit 3 Project--Interactive Form
 
-# Real-time Error Messages
-Rather than providing an error message on submit, the form checks for errors and display messages as the user begins typing inside a text field. The error appears as the user begins to type, and disappears as soon as the user has entered a complete and correctly formatted input.
+In this project, I have used JavaScript to enhance an interactive registration form for a fictional conference called "FullStack Conf."
 
+Using the supplied HTML and CSS files, I have added my own JavaScript to make the form more user-friendly by:
 
-# Todo:
-- css/reset.css or css/normalize.css - This is not a project requirement, but using a reset or normalize CSS file is an important common standard in web development as it helps zero out the initial styles that different browsers add to their page by default. So you are encouraged to take this extra step. You should be able to find what you need with a Google search.
+- adding customized and conditional behavior and interactivity
+- validating user input and providing helpful error messages when the user enters invalid information into the form fields.
+
+By completing this project, I have gained a solid foundational knowledge of using and customizing forms in my projects. This is tremendously valuable since forms are a major aspect of most web sites and web applications, which makes this project a key addition to my portfolio, and a crucial step on my journey to becoming a professional full stack web developer.
