@@ -28,17 +28,17 @@ const handleDesignTheme = (theme, selectHTML) => {
   if (theme === "js puns") {
     // if 'js puns' gets passed, it displays Color menu with cornflowerblue,
     //  darkslategrey, and gold options
-    const punsHTML = `<option value="cornflowerblue">Cornflower Blue (JS Puns shirt only)</option>
-    <option value="darkslategrey">Dark Slate Grey (JS Puns shirt only)</option>
-    <option value="gold">Gold (JS Puns shirt only)</option>`;
+    const punsHTML = `<option value="cornflowerblue">Cornflower Blue</option>
+    <option value="darkslategrey">Dark Slate Grey</option>
+    <option value="gold">Gold</option>`;
     selectHTML.innerHTML = punsHTML;
     colors.style.display = "block";
   } else if (theme === "heart js") {
     // if 'heart js' gets passed, it displays Color menu with tomato,
     //  steelblue, and dimgrey options
-    const heartHTML = `<option value="tomato">Tomato (I &#9829; JS shirt only)</option>
-    <option value="steelblue">Steel Blue (I &#9829; JS shirt only)</option>
-    <option value="dimgrey">Dim Grey (I &#9829; JS shirt only)</option>`;
+    const heartHTML = `<option value="tomato">Tomato</option>
+    <option value="steelblue">Steel Blue</option>
+    <option value="dimgrey">Dim Grey</option>`;
     selectHTML.innerHTML = heartHTML;
     colors.style.display = "block";
   } else {
@@ -98,11 +98,13 @@ const setNewPrice = () => {
     const text = `Total Price: 🤪 Must Select At Least One Activity`;
     const priceHTML = createEl("label", "price", text);
     activities.appendChild(priceHTML);
+    document.querySelector("#price").className += ' boldTextRed'; 
     activitySelected = false;
   } else {
     const text = `Total Price: $${totalCost}`;
     const priceHTML = createEl("label", "price", text);
     activities.appendChild(priceHTML);
+    document.querySelector("#price").className += ' boldTextGreen'; 
     activitySelected = true;
   }
 };
@@ -185,7 +187,7 @@ let payWithCredit = true;
 let payWithPaypal = false;
 let payWithBitcoin = false;
 payments.addEventListener("change", (e) => {
-  // Display the #credit-card div, and hide the "PayPal" and "Bitcoin" information. 
+  // Display the #credit-card div, and hide the "PayPal" and "Bitcoin" information.
   if (e.target.value === "credit card") {
     document.querySelector("#credit-card").style.display = "block";
     document.querySelector("#paypal").style.display = "none";
@@ -220,30 +222,39 @@ const nameValidation = document.querySelector("[id=name]");
 nameValidation.placeholder = `X Æ A-ii`;
 nameValidation.addEventListener("change", (e) => {
   if (nameValidation.value === "") {
-    document.querySelector("[for=name]").textContent = "Name: 🤪 Username must have at least 1 character";
+    document.querySelector("[for=name]").textContent =
+      "Name: 🤪 Username must have at least 1 character";
+    nameValidation.style.borderColor = "red";
     nameValid = false;
   } else {
     document.querySelector("[for=name]").textContent = "Name: 😁 Nice name!";
+    nameValidation.style.borderColor = "green";
     nameValid = true;
   }
-})
+});
 
 // validation for email
 const emailInput = document.getElementById("mail");
-emailInput.placeholder = `fully@stacked.com`
+emailInput.placeholder = `fully@stacked.com`;
 let emailValid = false;
 function validationCallback(isValidEmail) {
-  return e => {
+  return (e) => {
     const formInput = e.target.value;
     const isValid = isValidEmail(formInput);
     if (isValid) {
-      document.querySelector("[for=mail]").textContent = `Email: 😁 Nice Email!`;
+      document.querySelector(
+        "[for=mail]"
+      ).textContent = `Email: 😁 Nice Email!`;
+      emailInput.style.borderColor = "green";
       emailValid = true;
     } else {
-      document.querySelector("[for=mail]").textContent = `Email: 🤪 sorry@try.again`;
+      document.querySelector(
+        "[for=mail]"
+      ).textContent = `Email: 🤪 sorry@try.again`;
+      emailInput.style.borderColor = "red";
       emailValid = false;
     }
-  }
+  };
 }
 
 function isValidEmail(email) {
@@ -252,24 +263,28 @@ function isValidEmail(email) {
 
 emailInput.addEventListener("input", validationCallback(isValidEmail));
 
-
-
 //validation for credit card number
-const ccNumInput = document.querySelector('#cc-num')
-ccNumInput.placeholder = `0000 0000 0000 0000`
+const ccNumInput = document.querySelector("#cc-num");
+ccNumInput.placeholder = `0000 0000 0000 0000`;
 let creditValid = false;
 function validationCallbackCred(isValidCreditNum) {
-  return e => {
+  return (e) => {
     const formInput = e.target.value;
     const isValid = isValidCreditNum(formInput);
     if (isValid) {
-      document.querySelector("[for=cc-num]").textContent = `Card Number: 😁 Cha-ching!`;
+      document.querySelector(
+        "[for=cc-num]"
+      ).textContent = `Card Number: 😁 Cha-ching!`;
+      ccNumInput.style.borderColor = "green";
       creditValid = true;
     } else {
-      document.querySelector("[for=cc-num]").textContent = `Card Number: 🤪 Card Number must be 13-16 digits`;
+      document.querySelector(
+        "[for=cc-num]"
+      ).textContent = `Card Number: 🤪 Card Number must be 13-16 digits`;
+      ccNumInput.style.borderColor = "red";
       creditValid = false;
     }
-  }
+  };
 }
 
 function isValidCreditNum(ccNumValue) {
@@ -278,62 +293,56 @@ function isValidCreditNum(ccNumValue) {
 
 ccNumInput.addEventListener("input", validationCallbackCred(isValidCreditNum));
 
-/*
-
-Still considering how to (or whether I should) implement a reformating of the credit card number
-i.e. 0000 0000 0000 0000
-the issue is handling for 13 through 16 digit length combinations.
-
-ccNumInput.addEventListener('input', e => {
-  e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
-}); // https://stackoverflow.com/questions/17260238/how-to-insert-space-every-4-characters-for-iban-registering
-
-*/
-
 //validation for zip code
-const zipInput = document.querySelector('#zip')
-zipInput.placeholder = `12345`
+const zipInput = document.querySelector("#zip");
+zipInput.placeholder = `12345`;
 let zipValid = false;
 function validationCallbackZip(isValidZipNum) {
-  return e => {
+  return (e) => {
     const formInput = e.target.value;
     const isValid = isValidZipNum(formInput);
     if (isValid) {
       document.querySelector("[for=zip]").textContent = `Zip Code: 😁`;
+      zipInput.style.borderColor = "green";
       zipValid = true;
     } else {
-      document.querySelector("[for=zip]").textContent = `Zip Code: 🤪 5 digits only`;
+      document.querySelector(
+        "[for=zip]"
+      ).textContent = `Zip Code: 🤪 5 digits only`;
+      zipInput.style.borderColor = "red";
       zipValid = false;
     }
-  }
+  };
 }
 
 function isValidZipNum(zipInput) {
-  return /\d{5}/.test(zipInput);
+  return /^\d{5}$/.test(zipInput);
 }
 
 zipInput.addEventListener("input", validationCallbackZip(isValidZipNum));
 
 //validation for cvv
-const cvvInput = document.querySelector('#cvv')
-cvvInput.placeholder = `123`
+const cvvInput = document.querySelector("#cvv");
+cvvInput.placeholder = `123`;
 let cvvValid = false;
 function validationCallbackCVV(isValidCVV) {
-  return e => {
+  return (e) => {
     const formInput = e.target.value;
     const isValid = isValidCVV(formInput);
     if (isValid) {
       document.querySelector("[for=cvv]").textContent = `CVV: 😁`;
+      cvvInput.style.borderColor = "green";
       cvvValid = true;
     } else {
       document.querySelector("[for=cvv]").textContent = `CVV: 🤪 3 digits only`;
+      cvvInput.style.borderColor = "red";
       cvvValid = false;
     }
-  }
+  };
 }
 
 function isValidCVV(cvvInput) {
-  return /\d{3}/.test(cvvInput);
+  return /^\d{3}$/.test(cvvInput);
 }
 
 cvvInput.addEventListener("change", validationCallbackCVV(isValidCVV));
@@ -341,37 +350,37 @@ cvvInput.addEventListener("change", validationCallbackCVV(isValidCVV));
 const validPaymentMethod = () => {
   if (payWithCredit) {
     if (creditValid && zipValid && cvvValid) {
-      return true
+      return true;
     }
-  } else if ( payWithPaypal ){
-    return true
-  } else if ( payWithBitcoin ) {
-    return true
+  } else if (payWithPaypal) {
+    return true;
+  } else if (payWithBitcoin) {
+    return true;
   } else {
-    return false
+    return false;
   }
-}
+};
 
 const readyToSubmit = () => {
-  if ( nameValid && emailValid && activitySelected && validPaymentMethod() ) {
-    return true
+  if (nameValid && emailValid && activitySelected && validPaymentMethod()) {
+    return true;
   } else {
-    return false
+    return false;
   }
-}
+};
 
-
-const registerButton = document.querySelector('button')
+const registerButton = document.querySelector("button");
 registerButton.textContent = `🤪 Form is Incomplete`;
 registerButton.disabled = true;
-const form = document.querySelector('form');
-form.addEventListener('change', () => {
+const form = document.querySelector("form");
+form.addEventListener("change", () => {
   if (readyToSubmit()) {
     registerButton.disabled = false;
     registerButton.textContent = `Register`;
+    registerButton.style.borderColor = "green";
   } else {
     registerButton.disabled = true;
     registerButton.textContent = `🤪 Form is Incomplete`;
+    registerButton.style.borderColor = "red";
   }
-})
-
+});
